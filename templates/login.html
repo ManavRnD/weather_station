@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<section class="w3-display-middle">
+
+    <div class="row text-center">
+        <h2 class="mb-5 font-weight-bold">Manav Energy Pvt Ltd </h2>
+        <form action="" method="post">
+            <!-- Email input -->
+            <div class="form-outline mb-3">
+                <input class="form-control form-control-lg" name="username" placeholder="Username"
+                       type="text"/>
+            </div>
+
+            <!-- Password input -->
+            <div class="form-outline mb-5">
+                <input class="form-control form-control-lg" name="password" placeholder="Password"
+                       type="password"/>
+            </div>
+
+            <div class="text-center text-lg-center mt-4 mb-5 pt-2">
+                <button class="btn btn-primary btn-lg button" type="submit"
+                >Login
+                </button>
+                {% if error %}
+                <p class="error text-center mt-5"><strong>Error:</strong> {{ error }} </p>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

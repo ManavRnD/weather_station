@@ -1,0 +1,140 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<hr>
+
+<div class="row">
+    <div class="column text-center mt-2" style="width:100%;color:red">
+        <h5 class="color-red">Wind Direction : - N = 0; NE = 1; E = 2; SE = 3; S = 4; SW = 5; W = 6; NW = 7</h5>
+    </div>
+</div>
+<style>
+    tr:hover {background-color: #D6EEEE;}
+</style>
+<table class="table table-striped" id="data">
+    <thead>
+    <hr>
+    <tr class="text-center">
+        <th hidden>ID</th>
+        <th>AS3935</th>
+        <th>Speed (m/s)</th>
+        <th>Force</th>
+        <th>Direction</th>
+        <th>Humidity (%)</th>
+        <th>Temperature (℃)</th>
+        <th>Pressure (kPa)</th>
+        <th>Noise (dB)</th>
+        <th>Rain (mm)</th>
+        <th>Date & Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in data %}
+    <tr>
+        <td hidden>{{ row[0] }}</td>
+        <td class="text-center">{{ row[2] }}</td>
+        <td class="text-center">{{ row[3] }}</td>
+        <td class="text-center">{{ row[4] }}</td>
+        <td class="text-center">{{ row[5] }}</td>
+        <td class="text-center">{{ row[6] }}</td>
+        <td class="text-center">{{ row[7] }}</td>
+        <td class="text-center">{{ row[8] }}</td>
+        <td class="text-center">{{ row[9] }}</td>
+        <td class="text-center">{{ row[10] }}</td>
+        <td class="text-center">{{ row[11] }}</td>
+        <td class="text-start">{{ row[12] }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+      $('#data').DataTable({
+        searching: true,
+        order: [[0,'desc']],
+        columns: [
+          {orderable: true},
+          {orderable: true},
+          {orderable: true},
+          {orderable: true},
+          {orderable: true},
+          {orderable: true},
+          {orderable: true},
+          {orderable: true},
+          {orderable: true},
+          {orderable: true},
+          {orderable: true},
+          {orderable: true}],
+      });
+    });
+
+    function exportData(){
+    /* Get the HTML data using Element by Id */
+    var table = document.getElementById("data");
+
+    /* Declaring array variable */
+    var rows =[];
+
+      //iterate through rows of table
+    for(var i=0,row; row = table.rows[i];i++){
+        //rows would be accessed using the "row" variable assigned in the for loop
+        //Get each cell value/column from the row
+        column1 = row.cells[0].innerText;
+        column2 = row.cells[1].innerText;
+        column3 = row.cells[2].innerText;
+        column4 = row.cells[3].innerText;
+        column5 = row.cells[4].innerText;
+        column6 = row.cells[5].innerText;
+        column7 = row.cells[6].innerText;
+        column8 = row.cells[7].innerText;
+        column9 = row.cells[8].innerText;
+        column10 = row.cells[9].innerText;
+        column11 = row.cells[10].innerText;
+        column12 = row.cells[11].innerText;
+
+
+
+    /* add a new records in the array */
+        rows.push(
+            [
+                column1,
+                column2,
+                column3,
+                column4,
+                column5,
+                column6,
+                column7,
+                column8,
+                column9,
+                column10,
+                column11,
+                column12,
+
+            ]
+        );
+
+        }
+        csvContent = "data:text/csv;charset=utf-8,";
+         /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
+        rows.forEach(function(rowArray){
+            row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+
+        /* create a hidden <a> DOM node and set its download attribute */
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "solar_data_admin.csv");
+        document.body.appendChild(link);
+         /* download the data file named "Stock_Price_Report.csv" */
+        link.click();
+}
+
+</script>
+{% endblock %}
+
